@@ -35,7 +35,7 @@ int main(int argc, char * argv []){
     printf("Typos OK\n");
 
     //Show symbols table
-    printf("Symbols table:\n");
+    printf("Symbol table:\n");
     showSymbolTable();
 
     //Generate code

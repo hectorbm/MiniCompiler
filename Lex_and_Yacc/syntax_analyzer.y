@@ -181,7 +181,8 @@ factor : LPAREN exp RPAREN
 int yyerror(char *errmsg){
   printf("%s", errmsg);
   printf("%s",token_str);
-  return 0;
+  exit(EXIT_FAILURE);
+  return -1;
 }
 
 static int yylex(void){

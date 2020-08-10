@@ -16,21 +16,12 @@ int getSymbolPosition(char * varName){
 int addSymbol(char * varName){
     int symbolAdded = 0;
     if(getSymbolPosition(varName)==-1){
-        struct symbol aNewSymbol = {0,NULL,varName,0,"NA"}; //NA means Not assigned
+        struct symbol aNewSymbol = {0,NULL,varName,"NA"}; //NA means Not assigned
         sym_table[nextEmptyPos] = aNewSymbol;
         nextEmptyPos++;
         symbolAdded = 1;
     }
     return symbolAdded;
-}
-
-void setValueToSymbol(int aValue, char * varName){
-    int i;
-    for(i=0;i<nextEmptyPos;i++){
-         if(strcmp(varName,sym_table[i].varName)==0){
-             sym_table[i].value = aValue;
-         }
-    }
 }
 
 void setSymbolVarType(char * varName, char * varType){
@@ -81,10 +72,10 @@ void addLineToSymbol(int lineNo, char * varName){
 }
 
 void showSymbolTable(){
-    printf("Variable Initial Value\tLines\tType\n");
+    printf("Variable\tLines\tType\n");
     int i,j;
     for(i=0;i<nextEmptyPos;i++){
-        printf("%s\t%d\t\t",sym_table[i].varName,sym_table[i].value);
+        printf("%s\t\t",sym_table[i].varName);
         for(j=0;j<sym_table[i].linesNo;j++){
             printf("%d,",sym_table[i].lines[j]);
         }
