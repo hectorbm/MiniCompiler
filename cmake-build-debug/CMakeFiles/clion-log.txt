@@ -1,4 +1,1 @@
-/home/hector/opt/clion-2020.1.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/hector/CLionProjects/MiniCompiler
--- Configuring done
--- Generating done
--- Build files have been written to: /home/hector/CLionProjects/MiniCompiler/cmake-build-debug
+CMakeLists.txt not found in /home/hector/CLionProjects/MiniCompiler Select CMakeLists.txt file...
