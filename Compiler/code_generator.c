@@ -5,226 +5,93 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
     CodeGenVM instructionRetVal={-1,-1},aux;
     int len_if_Part = 0, len_else_part = 0, repeat_ini=0;
     if(st!=NULL){
-        switch (st->nodeType) {
+        switch (st->nodeType){
             case IF_TYPE:
-                switch (st->leftChild->opType) {
-                    case EQUAL_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
+                aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
+                r1 = aux.destreg;
+                nextLineNo = aux.endCodeLine + 1;
 
-                        //Check length of if-part
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo+1,1);
-                        len_if_Part = aux.endCodeLine;
+                //Check length of if-part
+                aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo+1,1);
+                len_if_Part = aux.endCodeLine;
 
-                        //Check len of else-part
-                        if(st->rightChild !=NULL){
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,len_if_Part+2,1);
-                            len_else_part = aux.endCodeLine;
-                        }
-
-                        if(st->rightChild !=NULL){
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BNE,%d,0,%d\n",r1,len_if_Part+2);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"JUMP,%d\n",len_else_part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-                        else{
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BNE,%d,0,%d\n",r1,len_if_Part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-
-                        if(st->nextStmt != NULL){
-                            aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                        else{
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                        break;
-                    case LESST_OP: //BGEZ
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-
-                        //Check length of if-part
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo+1,1);
-                        len_if_Part = aux.endCodeLine;
-
-                        //Check len of else-part
-                        if(st->rightChild !=NULL){
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,len_if_Part+2,1);
-                            len_else_part = aux.endCodeLine;
-                        }
-
-                        if(st->rightChild !=NULL){
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BGEZ,%d,%d\n",r1,len_if_Part+2);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"JUMP,%d\n",len_else_part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-                        else{
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BGEZ,%d,%d\n",r1,len_if_Part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-
-                        if(st->nextStmt != NULL){
-                            aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                        else{
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                    break;
-                    case MORET_OP: //BLEZ
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-
-                        //Check length of if-part
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo+1,1);
-                        len_if_Part = aux.endCodeLine;
-
-                        //Check len of else-part
-                        if(st->rightChild !=NULL){
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,len_if_Part+2,1);
-                            len_else_part = aux.endCodeLine;
-                        }
-
-                        if(st->rightChild !=NULL){
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BLEZ,%d,%d\n",r1,len_if_Part+2);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"JUMP,%d\n",len_else_part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-                        else{
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BLEZ,%d,%d\n",r1,len_if_Part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-
-                        if(st->nextStmt != NULL){
-                            aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                        else{
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                    break;
-                    case EQMORET_OP: //BLTZ
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-
-                        //Check length of if-part
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo+1,1);
-                        len_if_Part = aux.endCodeLine;
-
-                        //Check len of else-part
-                        if(st->rightChild !=NULL){
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,len_if_Part+2,1);
-                            len_else_part = aux.endCodeLine;
-                        }
-
-                        if(st->rightChild !=NULL){
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BLTZ,%d,%d\n",r1,len_if_Part+2);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"JUMP,%d\n",len_else_part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-                        else{
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BLTZ,%d,%d\n",r1,len_if_Part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-
-                        if(st->nextStmt != NULL){
-                            aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                        else{
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                    break;
-                    case EQLESST_OP: //BGTZ
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-
-                        //Check length of if-part
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo+1,1);
-                        len_if_Part = aux.endCodeLine;
-
-                        //Check len of else-part
-                        if(st->rightChild !=NULL){
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,len_if_Part+2,1);
-                            len_else_part = aux.endCodeLine;
-                        }
-
-                        if(st->rightChild !=NULL){
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BGTZ,%d,%d\n",r1,len_if_Part+2);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"JUMP,%d\n",len_else_part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->rightChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-                        else{
-                            if(!lenCheckMode)
-                                fprintf(vm_code,"BGTZ,%d,%d\n",r1,len_if_Part+1);
-                            nextLineNo++;
-                            aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            nextLineNo = aux.endCodeLine + 1;
-                        }
-
-                        if(st->nextStmt != NULL){
-                            aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo,lenCheckMode);
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                        else{
-                            instructionRetVal.endCodeLine = aux.endCodeLine;
-                        }
-                    break;
+                //Check len of else-part
+                if(st->rightChild !=NULL){
+                    aux = generateCode(st->rightChild,vm_code,initialTempReg,len_if_Part+2,1);
+                    len_else_part = aux.endCodeLine;
                 }
-                return instructionRetVal;
+
+                if(st->rightChild !=NULL){
+                    if(!lenCheckMode){
+                        switch (st->leftChild->opType){
+                            case EQUAL_OP:
+                                fprintf(vm_code,"BNE,%d,0,%d\n",r1,len_if_Part+2);
+                                break;
+                            case LESST_OP:
+                                fprintf(vm_code,"BGEZ,%d,%d\n",r1,len_if_Part+2);
+                                break;
+
+                            case MORET_OP:
+                                fprintf(vm_code,"BLEZ,%d,%d\n",r1,len_if_Part+2);
+                                break;
+
+                            case EQMORET_OP:
+                                fprintf(vm_code,"BLTZ,%d,%d\n",r1,len_if_Part+2);
+                                break;
+                            case EQLESST_OP:
+                                fprintf(vm_code,"BGTZ,%d,%d\n",r1,len_if_Part+2);
+                                break;
+                        }
+
+                    }
+
+                    nextLineNo++;
+                    aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
+                    nextLineNo = aux.endCodeLine + 1;
+                    if(!lenCheckMode)
+                        fprintf(vm_code,"JUMP,%d\n",len_else_part+1);
+                    nextLineNo++;
+                    aux = generateCode(st->rightChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
+                    nextLineNo = aux.endCodeLine + 1;
+                }
+                else{
+                    if(!lenCheckMode){
+                        switch (st->leftChild->opType){
+                            case EQUAL_OP:
+                                fprintf(vm_code,"BNE,%d,0,%d\n",r1,len_if_Part+1);
+                                break;
+                            case LESST_OP:
+                                fprintf(vm_code,"BGEZ,%d,%d\n",r1,len_if_Part+1);
+                                break;
+
+                            case MORET_OP:
+                                fprintf(vm_code,"BLEZ,%d,%d\n",r1,len_if_Part+1);
+                                break;
+
+                            case EQMORET_OP:
+                                fprintf(vm_code,"BLTZ,%d,%d\n",r1,len_if_Part+1);
+                                break;
+                            case EQLESST_OP:
+                                fprintf(vm_code,"BGTZ,%d,%d\n",r1,len_if_Part+1);
+                                break;
+                        }
+
+                    }
+
+                    nextLineNo++;
+                    aux = generateCode(st->centerChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
+                    nextLineNo = aux.endCodeLine + 1;
+                }
+
+                if(st->nextStmt != NULL){
+                    aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo,lenCheckMode);
+                    instructionRetVal.endCodeLine = aux.endCodeLine;
+                }
+                else{
+                    instructionRetVal.endCodeLine = aux.endCodeLine;
+                }
+
+                break;
 
 
             case REPEAT_TYPE:
@@ -264,7 +131,7 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
                     instructionRetVal.endCodeLine = aux.endCodeLine + 1;
                 }
 
-                return instructionRetVal;
+                break;
 
             case ASSIGN_TYPE:
                 aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
@@ -279,8 +146,7 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
                     aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo+1,lenCheckMode);
                     instructionRetVal = aux;
                 }
-
-                return instructionRetVal;
+                break;
 
             case READ_TYPE:
                 r1 = initialTempReg;
@@ -295,8 +161,7 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
                     aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo+2,lenCheckMode);
                     instructionRetVal = aux;
                 }
-
-                return instructionRetVal;
+                break;
 
             case WRITE_TYPE:
                 aux = generateCode(st->leftChild,vm_code,initialTempReg,nextLineNo,lenCheckMode);
@@ -312,16 +177,14 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
                     aux = generateCode(st->nextStmt,vm_code,initialTempReg,nextLineNo+1,lenCheckMode);
                     instructionRetVal = aux;
                 }
-
-                return instructionRetVal;
-
+                break;
             case ID_TYPE:
                 r1 = initialTempReg;
                 if(!lenCheckMode)
                     fprintf(vm_code,"LW,%d,%d\n",r1,getSymbolPosition(st->str_value));
                 instructionRetVal.destreg = r1;
                 instructionRetVal.endCodeLine = nextLineNo;
-                return instructionRetVal;
+                break;
 
             case CONST_TYPE:
                 r1 = initialTempReg;
@@ -329,158 +192,67 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
                     fprintf(vm_code,"ADDI,%d,0,%d\n",r1,st->value);
                 instructionRetVal.destreg = r1;
                 instructionRetVal.endCodeLine = nextLineNo;
-                return instructionRetVal;
+                break;
 
             case OPERATION_TYPE:
-                switch (st->opType) {
-                    case PLUS_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
+                aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
+                r1 = aux.destreg;
+                nextLineNo = aux.endCodeLine + 1;
+                aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
+                r2 = aux.destreg;
+                nextLineNo = aux.endCodeLine + 1;
+                r3 = initialTempReg;
 
-                        if(!lenCheckMode)
+                if(!lenCheckMode){
+                    switch (st->opType) {
+                        case PLUS_OP:
                             fprintf(vm_code,"ADD,%d,%d,%d\n",r3,r1,r2);
+                            break;
 
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-                        return instructionRetVal;
-
-                    case SUB_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                        case SUB_OP:
                             fprintf(vm_code,"SUB,%d,%d,%d\n",r3,r1,r2);
-
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-                        return instructionRetVal;
-
-                    case MULT_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                            break;
+                        case MULT_OP:
                             fprintf(vm_code,"MULT,%d,%d,%d\n",r3,r1,r2);
+                            break;
 
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-                        return instructionRetVal;
-
-                    case DIV_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                        case DIV_OP:
                             fprintf(vm_code,"DIV,%d,%d,%d\n",r3,r1,r2);
+                            break;
 
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-                        return instructionRetVal;
-
-                    case EQUAL_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                        case EQUAL_OP:
                             fprintf(vm_code,"SUB,%d,%d,%d\n",r3,r1,r2);
+                            break;
 
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-
-                        return instructionRetVal;
-
-                    case LESST_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                        case LESST_OP:
                             fprintf(vm_code,"SUB,%d,%d,%d\n",r3,r1,r2);
+                            break;
 
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-
-                        return instructionRetVal;
-
-                    case MORET_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                        case MORET_OP:
                             fprintf(vm_code,"SUB,%d,%d,%d\n",r3,r1,r2);
+                            break;
 
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-
-                        return instructionRetVal;
-
-                    case EQMORET_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                        case EQMORET_OP:
                             fprintf(vm_code,"SUB,%d,%d,%d\n",r3,r1,r2);
-
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-
-                        return instructionRetVal;
-
-                    case EQLESST_OP:
-                        aux = generateCode(st->leftChild,vm_code,initialTempReg+1,nextLineNo,lenCheckMode);
-                        r1 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        aux = generateCode(st->centerChild,vm_code,initialTempReg+2,nextLineNo,lenCheckMode);
-                        r2 = aux.destreg;
-                        nextLineNo = aux.endCodeLine + 1;
-                        r3 = initialTempReg;
-                        if(!lenCheckMode)
+                            break;
+                        case EQLESST_OP:
                             fprintf(vm_code,"SUB,%d,%d,%d\n",r3,r1,r2);
-
-                        instructionRetVal.destreg = r3;
-                        instructionRetVal.endCodeLine = nextLineNo;
-
-                        return instructionRetVal;
+                            break;
+                    }
                 }
+
+                instructionRetVal.destreg = r3;
+                instructionRetVal.endCodeLine = nextLineNo;
+
                 break;
+
+
         }
+        return instructionRetVal;
     }
 }
 
-
-// InitialTempReg is 1, $0 is constant!
+// InitialTempReg is 1, $0 is constant, using VM MIPS type register.
 void codeGenerator(SyntaxTree * st,char * destFile){
     FILE * vm_code = NULL;
     if((vm_code=fopen(destFile,"w"))==NULL){
