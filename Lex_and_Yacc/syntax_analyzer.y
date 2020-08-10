@@ -8,6 +8,7 @@
 typedef SyntaxTree *YYSTYPE;
 
 static char var_name[TOKENLENGTH];
+static int curLineNo;
 int yyerror(char *errmsg);
 static SyntaxTree * syntaxTree;
 static int yylex(void);
@@ -74,11 +75,13 @@ repeat_stmt : REPEAT stmt_seq UNTIL exp
 
 assign_stmt : ID
 	      {
-                strncpy(var_name, token_str,TOKENLENGTH);}
+                strncpy(var_name, token_str,TOKENLENGTH);
+                curLineNo = lineNo;}
 	      ASSIGN exp
               { $$ = create_node(ASSIGN_TYPE);
               	strncpy($$->str_value, var_name,TOKENLENGTH);
                 $$->leftChild = $4;
+                $$->lineNo = curLineNo;
               }
 
 read_stmt : READ ID
@@ -174,13 +177,13 @@ factor : LPAREN exp RPAREN
          | ID
          { $$ = create_node(ID_TYPE);
            strncpy($$->str_value, token_str,TOKENLENGTH);
+           $$->lineNo = lineNo;
          }
          ;
 %%
 
 int yyerror(char *errmsg){
-  printf("%s", errmsg);
-  printf("%s",token_str);
+  printf("\n%s: %s at line: %d\n", errmsg, token_str,lineNo);
   exit(EXIT_FAILURE);
   return -1;
 }

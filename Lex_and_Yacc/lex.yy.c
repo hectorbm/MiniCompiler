@@ -880,7 +880,7 @@ case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
 #line 40 "lexical_analyzer.l"
-{/*Skip newline*/}
+{lineNo++;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
@@ -1911,6 +1911,11 @@ void yyfree (void * ptr )
 
 
 int getToken(){
+      static int firstLine = 1;
+      if (firstLine){
+        firstLine = 0;
+        lineNo = 0;
+      }
       int aToken;
       aToken = yylex();
       strncpy(token_str, yytext,TOKENLENGTH);

@@ -35,7 +35,7 @@ typedef struct st_node{
     char * str_value;
     int value;
     OperationType opType;
-
+    int lineNo;
     char varType[5];
 
     struct st_node *nextStmt;

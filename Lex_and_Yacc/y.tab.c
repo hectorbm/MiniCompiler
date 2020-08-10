@@ -77,11 +77,12 @@
 typedef SyntaxTree *YYSTYPE;
 
 static char var_name[TOKENLENGTH];
+static int curLineNo;
 int yyerror(char *errmsg);
 static SyntaxTree * syntaxTree;
 static int yylex(void);
 
-#line 85 "y.tab.c"
+#line 86 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -553,10 +554,10 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    23,    23,    27,    41,    47,    48,    49,    50,    51,
-      54,    59,    68,    76,    75,    84,    90,    96,   103,   110,
-     117,   124,   131,   137,   143,   150,   153,   159,   165,   168,
-     170,   174
+       0,    24,    24,    28,    42,    48,    49,    50,    51,    52,
+      55,    60,    69,    77,    76,    87,    93,    99,   106,   113,
+     120,   127,   134,   140,   146,   153,   156,   162,   168,   171,
+     173,   177
 };
 #endif
 
@@ -1385,13 +1386,13 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 24 "syntax_analyzer.y"
+#line 25 "syntax_analyzer.y"
           {syntaxTree = yyvsp[0];}
-#line 1391 "y.tab.c"
+#line 1392 "y.tab.c"
     break;
 
   case 3:
-#line 28 "syntax_analyzer.y"
+#line 29 "syntax_analyzer.y"
            { 
              SyntaxTree * temp = yyvsp[-1];
              if(temp != NULL){ 
@@ -1405,248 +1406,251 @@ yyreduce:
               yyval = yyvsp[0];
              }
            }
-#line 1409 "y.tab.c"
+#line 1410 "y.tab.c"
     break;
 
   case 4:
-#line 42 "syntax_analyzer.y"
+#line 43 "syntax_analyzer.y"
            { 
              yyval = yyvsp[0];
            }
-#line 1417 "y.tab.c"
+#line 1418 "y.tab.c"
     break;
 
   case 5:
-#line 47 "syntax_analyzer.y"
+#line 48 "syntax_analyzer.y"
                { yyval = yyvsp[0];  }
-#line 1423 "y.tab.c"
+#line 1424 "y.tab.c"
     break;
 
   case 6:
-#line 48 "syntax_analyzer.y"
+#line 49 "syntax_analyzer.y"
                           { yyval = yyvsp[-1]; }
-#line 1429 "y.tab.c"
+#line 1430 "y.tab.c"
     break;
 
   case 7:
-#line 49 "syntax_analyzer.y"
+#line 50 "syntax_analyzer.y"
                           { yyval = yyvsp[-1]; }
-#line 1435 "y.tab.c"
+#line 1436 "y.tab.c"
     break;
 
   case 8:
-#line 50 "syntax_analyzer.y"
+#line 51 "syntax_analyzer.y"
                         { yyval = yyvsp[-1]; }
-#line 1441 "y.tab.c"
+#line 1442 "y.tab.c"
     break;
 
   case 9:
-#line 51 "syntax_analyzer.y"
+#line 52 "syntax_analyzer.y"
                          { yyval = yyvsp[-1]; }
-#line 1447 "y.tab.c"
+#line 1448 "y.tab.c"
     break;
 
   case 10:
-#line 55 "syntax_analyzer.y"
+#line 56 "syntax_analyzer.y"
           { yyval = create_node(IF_TYPE);
             yyval->leftChild = yyvsp[-3];
             yyval->centerChild = yyvsp[-1];
           }
-#line 1456 "y.tab.c"
+#line 1457 "y.tab.c"
     break;
 
   case 11:
-#line 60 "syntax_analyzer.y"
+#line 61 "syntax_analyzer.y"
           { 
             yyval = create_node(IF_TYPE);
             yyval->leftChild = yyvsp[-5];
             yyval->centerChild = yyvsp[-3];
             yyval->rightChild = yyvsp[-1];
           }
-#line 1467 "y.tab.c"
+#line 1468 "y.tab.c"
     break;
 
   case 12:
-#line 69 "syntax_analyzer.y"
+#line 70 "syntax_analyzer.y"
               { yyval = create_node(REPEAT_TYPE);
                 yyval->leftChild = yyvsp[-2];
                 yyval->centerChild = yyvsp[0];
               }
-#line 1476 "y.tab.c"
+#line 1477 "y.tab.c"
     break;
 
   case 13:
-#line 76 "syntax_analyzer.y"
+#line 77 "syntax_analyzer.y"
               {
-                strncpy(var_name, token_str,TOKENLENGTH);}
-#line 1483 "y.tab.c"
+                strncpy(var_name, token_str,TOKENLENGTH);
+                curLineNo = lineNo;}
+#line 1485 "y.tab.c"
     break;
 
   case 14:
-#line 79 "syntax_analyzer.y"
+#line 81 "syntax_analyzer.y"
               { yyval = create_node(ASSIGN_TYPE);
               	strncpy(yyval->str_value, var_name,TOKENLENGTH);
                 yyval->leftChild = yyvsp[0];
+                yyval->lineNo = curLineNo;
               }
-#line 1492 "y.tab.c"
+#line 1495 "y.tab.c"
     break;
 
   case 15:
-#line 85 "syntax_analyzer.y"
+#line 88 "syntax_analyzer.y"
             { yyval = create_node(READ_TYPE);
               strncpy(yyval->str_value, token_str,TOKENLENGTH);
             }
-#line 1500 "y.tab.c"
+#line 1503 "y.tab.c"
     break;
 
   case 16:
-#line 91 "syntax_analyzer.y"
+#line 94 "syntax_analyzer.y"
              { yyval = create_node(WRITE_TYPE);
                yyval->leftChild = yyvsp[0];
              }
-#line 1508 "y.tab.c"
+#line 1511 "y.tab.c"
     break;
 
   case 17:
-#line 97 "syntax_analyzer.y"
+#line 100 "syntax_analyzer.y"
       { 
         yyval = create_node(OPERATION_TYPE);
         yyval->leftChild = yyvsp[-2];
         yyval->centerChild = yyvsp[0];
         yyval->opType = LESST_OP;
       }
-#line 1519 "y.tab.c"
+#line 1522 "y.tab.c"
     break;
 
   case 18:
-#line 104 "syntax_analyzer.y"
+#line 107 "syntax_analyzer.y"
       { 
         yyval = create_node(OPERATION_TYPE);
         yyval->leftChild = yyvsp[-2];
         yyval->centerChild = yyvsp[0];
         yyval->opType = MORET_OP;
       }
-#line 1530 "y.tab.c"
+#line 1533 "y.tab.c"
     break;
 
   case 19:
-#line 111 "syntax_analyzer.y"
+#line 114 "syntax_analyzer.y"
       { 
         yyval = create_node(OPERATION_TYPE);
         yyval->leftChild = yyvsp[-2];
         yyval->centerChild = yyvsp[0];
         yyval->opType = EQUAL_OP;
       }
-#line 1541 "y.tab.c"
+#line 1544 "y.tab.c"
     break;
 
   case 20:
-#line 118 "syntax_analyzer.y"
+#line 121 "syntax_analyzer.y"
       { 
         yyval = create_node(OPERATION_TYPE);
         yyval->leftChild = yyvsp[-2];
         yyval->centerChild = yyvsp[0];
         yyval->opType = EQLESST_OP;
       }
-#line 1552 "y.tab.c"
+#line 1555 "y.tab.c"
     break;
 
   case 21:
-#line 125 "syntax_analyzer.y"
+#line 128 "syntax_analyzer.y"
       { 
         yyval = create_node(OPERATION_TYPE);
         yyval->leftChild = yyvsp[-2];
         yyval->centerChild = yyvsp[0];
         yyval->opType = EQMORET_OP;
       }
-#line 1563 "y.tab.c"
+#line 1566 "y.tab.c"
     break;
 
   case 22:
-#line 132 "syntax_analyzer.y"
+#line 135 "syntax_analyzer.y"
       { 
         yyval = yyvsp[0];
       }
-#line 1571 "y.tab.c"
+#line 1574 "y.tab.c"
     break;
 
   case 23:
-#line 138 "syntax_analyzer.y"
+#line 141 "syntax_analyzer.y"
       { yyval = create_node(OPERATION_TYPE);
         yyval->leftChild = yyvsp[-2];
         yyval->centerChild = yyvsp[0];
         yyval->opType = PLUS_OP;
       }
-#line 1581 "y.tab.c"
+#line 1584 "y.tab.c"
     break;
 
   case 24:
-#line 144 "syntax_analyzer.y"
+#line 147 "syntax_analyzer.y"
       {
         yyval = create_node(OPERATION_TYPE);
         yyval->leftChild = yyvsp[-2];
         yyval->centerChild = yyvsp[0];
         yyval->opType = SUB_OP;
       }
-#line 1592 "y.tab.c"
+#line 1595 "y.tab.c"
     break;
 
   case 25:
-#line 150 "syntax_analyzer.y"
+#line 153 "syntax_analyzer.y"
              { yyval = yyvsp[0]; }
-#line 1598 "y.tab.c"
+#line 1601 "y.tab.c"
     break;
 
   case 26:
-#line 154 "syntax_analyzer.y"
+#line 157 "syntax_analyzer.y"
        { yyval = create_node(OPERATION_TYPE);
          yyval->leftChild = yyvsp[-2];
          yyval->centerChild = yyvsp[0];
          yyval->opType = MULT_OP;
        }
-#line 1608 "y.tab.c"
+#line 1611 "y.tab.c"
     break;
 
   case 27:
-#line 160 "syntax_analyzer.y"
+#line 163 "syntax_analyzer.y"
        { yyval = create_node(OPERATION_TYPE);
          yyval->leftChild = yyvsp[-2];
          yyval->centerChild = yyvsp[0];
          yyval->opType = DIV_OP;
        }
-#line 1618 "y.tab.c"
+#line 1621 "y.tab.c"
     break;
 
   case 28:
-#line 165 "syntax_analyzer.y"
+#line 168 "syntax_analyzer.y"
                { yyval = yyvsp[0]; }
-#line 1624 "y.tab.c"
+#line 1627 "y.tab.c"
     break;
 
   case 29:
-#line 169 "syntax_analyzer.y"
+#line 172 "syntax_analyzer.y"
          { yyval = yyvsp[-1]; }
-#line 1630 "y.tab.c"
+#line 1633 "y.tab.c"
     break;
 
   case 30:
-#line 171 "syntax_analyzer.y"
+#line 174 "syntax_analyzer.y"
          { yyval = create_node(CONST_TYPE);
            yyval->value = atoi(token_str);
          }
-#line 1638 "y.tab.c"
+#line 1641 "y.tab.c"
     break;
 
   case 31:
-#line 175 "syntax_analyzer.y"
+#line 178 "syntax_analyzer.y"
          { yyval = create_node(ID_TYPE);
            strncpy(yyval->str_value, token_str,TOKENLENGTH);
+           yyval->lineNo = lineNo;
          }
-#line 1646 "y.tab.c"
+#line 1650 "y.tab.c"
     break;
 
 
-#line 1650 "y.tab.c"
+#line 1654 "y.tab.c"
 
       default: break;
     }
@@ -1878,12 +1882,11 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 179 "syntax_analyzer.y"
+#line 183 "syntax_analyzer.y"
 
 
 int yyerror(char *errmsg){
-  printf("%s", errmsg);
-  printf("%s",token_str);
+  printf("\n%s: %s at line: %d\n", errmsg, token_str,lineNo);
   exit(EXIT_FAILURE);
   return -1;
 }

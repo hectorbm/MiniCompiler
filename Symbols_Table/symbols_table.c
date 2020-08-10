@@ -72,7 +72,7 @@ void addLineToSymbol(int lineNo, char * varName){
 }
 
 void showSymbolTable(){
-    printf("Variable\tLines\tType\n");
+    printf("Variable\tLines\t\tType\n");
     int i,j;
     for(i=0;i<nextEmptyPos;i++){
         printf("%s\t\t",sym_table[i].varName);
@@ -89,6 +89,7 @@ void buildSymbolsTable(SyntaxTree * st){
     if(st != NULL){
         if(st->nodeType == ASSIGN_TYPE || st->nodeType == READ_TYPE || st->nodeType == ID_TYPE){
             addSymbol(st->str_value);
+            addLineToSymbol(st->lineNo,st->str_value);
         }
         buildSymbolsTable(st->leftChild);
         buildSymbolsTable(st->centerChild);

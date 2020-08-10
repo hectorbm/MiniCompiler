@@ -37,7 +37,7 @@ end {return END;}
 ")" {return RPAREN;}
 {number} {return NUM;}
 {identifier} {return ID;}
-{newline} {/*Skip newline*/}
+{newline} {lineNo++;}
 {whitespace} {/*Skip whitespace*/}
 "{" { char c;
       do{
@@ -49,6 +49,11 @@ end {return END;}
 %%
 
 int getToken(){
+      static int firstLine = 1;
+      if (firstLine){
+        firstLine = 0;
+        lineNo = 0;
+      }
       int aToken;
       aToken = yylex();
       strncpy(token_str, yytext,TOKENLENGTH);
