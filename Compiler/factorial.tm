@@ -6,6 +6,4 @@ if x>0 then
         x:=x-1;
     until x=0;
     write fact;
-else
-    write 0-1;
 end

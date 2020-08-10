@@ -303,7 +303,7 @@ void runProgram(){
         if(executeInstruction(instructionMemory[programCounter])==-1){
             exit(EXIT_FAILURE);
         }
-        if(!branchTaken){
+        if(branchTaken == 0){
             programCounter++;
         }
         else{

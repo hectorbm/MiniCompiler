@@ -56,3 +56,11 @@ typedef struct {
     int iarg2;
     int iarg3;
 } INSTRUCTION;
+
+void cleanStart();
+InstructionOpcode strToInstruction(char * opcode);
+int opcodeNumberOfParams(InstructionOpcode opcode);
+int loadLineToMemory(char * line, int lineNo);
+int loadToMemory(FILE *programFile);
+int executeInstruction(INSTRUCTION instruction);
+void runProgram();
