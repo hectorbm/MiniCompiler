@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hector/CLionProjects/MiniCompiler/Virtual Machine/machine_sim.c
+machine_sim.h
+/home/hector/CLionProjects/MiniCompiler/Virtual Machine/machine_sim.h
+
+/home/hector/CLionProjects/MiniCompiler/Virtual Machine/machine_sim.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+

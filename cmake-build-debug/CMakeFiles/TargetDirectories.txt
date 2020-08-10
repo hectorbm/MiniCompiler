@@ -1,0 +1,3 @@
+/home/hector/CLionProjects/MiniCompiler/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/hector/CLionProjects/MiniCompiler/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/hector/CLionProjects/MiniCompiler/cmake-build-debug/CMakeFiles/MiniCompiler.dir

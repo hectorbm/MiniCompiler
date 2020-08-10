@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/MiniCompiler.dir/Virtual_Machine/machine_sim.c.o  -o MiniCompiler 
