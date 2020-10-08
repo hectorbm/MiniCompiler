@@ -11,7 +11,8 @@ letter  [a-zA-Z]
 number {digit}+
 identifier {letter}+
 newline \n
-whitespace [\t]+
+whitespace [\t ]+
+
 
 %%
 if {return IF;}
@@ -41,21 +42,69 @@ end {return END;}
 {whitespace} {/*Skip whitespace*/}
 "{" { char c;
       do{
-      c = input();
-      if(c==EOF) break;
-      }while(c!='}');
+            c = input();
+            if (c=='\n') {
+                  lineNo++;
+            }
+      }while(c!='}' && c!=0);
+      if (c==0){
+            return ERROR;
+      }
       }
 
 %%
+
+void printToken(int aToken){
+      switch(aToken){
+            // Reserved words
+            case IF:
+            case ELSE:
+            case THEN:
+            case REPEAT:
+            case UNTIL:
+            case READ:
+            case WRITE:     
+            case END:
+                  printf("Line:%d ,Reserved word:%s\n", lineNo, token_str);
+                  break;
+
+            // Number or variable identifier
+            case NUM: 
+                  printf("Line:%d ,Number:%s\n", lineNo, token_str);
+                  break;
+            case ID:
+                  printf("Line:%d ,Identifier:\'%s\'\n", lineNo, token_str);
+                  break;
+
+            // Special symbols 
+            case PLUS:
+            case SUB:
+            case MULT:
+            case DIV:
+            case EQUAL:
+            case EQLESST:
+            case EQMORET:
+            case ASSIGN:
+            case LESST:
+            case MORET:
+            case SEMIC:
+            case RPAREN:
+            case LPAREN:
+                  printf("Line:%d ,symbol:\'%s\'\n", lineNo, token_str);
+                  break;
+      }
+
+}
 
 int getToken(){
       static int firstLine = 1;
       if (firstLine){
         firstLine = 0;
-        lineNo = 0;
+        lineNo = 1;
       }
       int aToken;
       aToken = yylex();
       strncpy(token_str, yytext,TOKENLENGTH);
+      printToken(aToken);
       return aToken;
 }

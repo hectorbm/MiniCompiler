@@ -8,6 +8,7 @@ int main(int argc, char * argv []){
     SyntaxTree * st;
 
     if(argc!=2){
+        printf("Input file is missing!\n");
         exit(EXIT_FAILURE);
     }
 
@@ -17,7 +18,7 @@ int main(int argc, char * argv []){
     if((code = fopen(fileName,"r"))==NULL){
         exit(EXIT_FAILURE);
     }
-    //Set code as Lex input
+    //Set code as input
     yyin = code;
     //Create syntax tree
     st = parseAndGetSyntaxTree();
@@ -28,14 +29,14 @@ int main(int argc, char * argv []){
 
     //Build symbols table
     buildSymbolsTable(st);
-
+    
     //Check typos
     printf("Checking typos: ");
     check_typos(st);
     printf("Typos OK\n");
 
     //Show symbols table
-    printf("Symbol table:\n");
+    printf("Symbols table:\n");
     showSymbolTable();
 
     //Generate code

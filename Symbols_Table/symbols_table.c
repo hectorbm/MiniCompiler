@@ -3,7 +3,7 @@
 struct symbol sym_table[SYMTABLE_SIZE]; // The symbol table
 int nextEmptyPos = 0; // For adding new variables
 
-int getSymbolPosition(char * varName){
+int getSymbolMemoryPosition(char * varName){
     int i;
     for (i=0;i<nextEmptyPos;i++){
         if(strcmp(varName,sym_table[i].varName)==0){
@@ -15,7 +15,7 @@ int getSymbolPosition(char * varName){
 
 int addSymbol(char * varName){
     int symbolAdded = 0;
-    if(getSymbolPosition(varName)==-1){
+    if(getSymbolMemoryPosition(varName)==-1){
         struct symbol aNewSymbol = {0,NULL,varName,"NA"}; //NA means Not assigned
         sym_table[nextEmptyPos] = aNewSymbol;
         nextEmptyPos++;
@@ -28,18 +28,18 @@ void setSymbolVarType(char * varName, char * varType){
     int i;
     for(i=0;i<nextEmptyPos;i++){
         if(strcmp(varName,sym_table[i].varName)==0){
-            strncpy(sym_table[i].var_type,varType,5);
+            strncpy(sym_table[i].var_type,varType,MAXLEN_VARTYPE);
         }
     }
 }
 
 char * getSymbolVarType(char * varName){
     int i;
-    char *vartype = malloc(5*sizeof(char));
+    char *vartype = malloc(MAXLEN_VARTYPE*sizeof(char));
     vartype[0] = '\0';
     for(i=0;i<nextEmptyPos;i++){
         if(strcmp(varName,sym_table[i].varName)==0){
-            strncpy(vartype,sym_table[i].var_type,5);
+            strncpy(vartype,sym_table[i].var_type,MAXLEN_VARTYPE);
         }
     }
     return vartype;
@@ -53,7 +53,7 @@ void addLineToSymbol(int lineNo, char * varName){
                 sym_table[i].linesNo++;
                 sym_table[i].lines = (int *) malloc(sizeof(int));
                 if(sym_table[i].lines == NULL){
-                    printf("Error allocating memory\n");
+                    printf("Error allocating memory for symbols table\n");
                     exit(EXIT_FAILURE);
                 }
                 sym_table[i].lines[0] = lineNo;
@@ -62,7 +62,7 @@ void addLineToSymbol(int lineNo, char * varName){
                 sym_table[i].linesNo++;
                 sym_table[i].lines = (int *) realloc(sym_table[i].lines,sizeof(int)*sym_table[i].linesNo);
                 if(sym_table[i].lines == NULL){
-                    printf("Error allocating memory\n");
+                    printf("Error allocating memory for symbols table\n");
                     exit(EXIT_FAILURE);
                 }
                 sym_table[i].lines[sym_table[i].linesNo-1] = lineNo;

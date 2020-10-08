@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define SYMTABLE_SIZE 15
+#define MAXLEN_VARTYPE 5
 #include "../Syntax_Tree/syntax_tree.h"
 
 struct symbol{
@@ -11,7 +12,7 @@ struct symbol{
     char var_type[5];
 };
 
-int getSymbolPosition(char * varName);
+int getSymbolMemoryPosition(char * varName);
 int addSymbol(char * varName);
 void addLineToSymbol(int lineNo, char * varName);
 void showSymbolTable();

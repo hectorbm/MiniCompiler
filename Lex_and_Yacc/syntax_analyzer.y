@@ -18,7 +18,8 @@ static int yylex(void);
 
 %token IF THEN ELSE REPEAT UNTIL READ WRITE END
 %token PLUS SUB MULT DIV EQUAL LESST MORET EQMORET EQLESST SEMIC LPAREN RPAREN
-%token ID NUM ASSIGN
+%token ID NUM ASSIGN 
+%token ERROR
 
 %%
 program : stmt_seq
@@ -70,6 +71,7 @@ repeat_stmt : REPEAT stmt_seq UNTIL exp
               { $$ = create_node(REPEAT_TYPE);
                 $$->leftChild = $2;
                 $$->centerChild = $4;
+                $$->lineNo = lineNo;
               }
               ;
 
@@ -86,12 +88,14 @@ assign_stmt : ID
 
 read_stmt : READ ID
             { $$ = create_node(READ_TYPE);
+              $$->lineNo = lineNo;
               strncpy($$->str_value, token_str,TOKENLENGTH);
             }
             ;
 
 write_stmt : WRITE exp
              { $$ = create_node(WRITE_TYPE);
+               $$->lineNo = lineNo;
                $$->leftChild = $2;
              }
              ;
@@ -102,6 +106,7 @@ exp : simple_exp LESST simple_exp
         $$->leftChild = $1;
         $$->centerChild = $3;
         $$->opType = LESST_OP;
+        $$->lineNo = lineNo;
       }
       | simple_exp MORET simple_exp
       { 
@@ -109,6 +114,7 @@ exp : simple_exp LESST simple_exp
         $$->leftChild = $1;
         $$->centerChild = $3;
         $$->opType = MORET_OP;
+        $$->lineNo = lineNo;
       }
       | simple_exp EQUAL simple_exp
       { 
@@ -116,6 +122,7 @@ exp : simple_exp LESST simple_exp
         $$->leftChild = $1;
         $$->centerChild = $3;
         $$->opType = EQUAL_OP;
+        $$->lineNo = lineNo;
       }
       | simple_exp EQLESST simple_exp
       { 
@@ -123,6 +130,7 @@ exp : simple_exp LESST simple_exp
         $$->leftChild = $1;
         $$->centerChild = $3;
         $$->opType = EQLESST_OP;
+        $$->lineNo = lineNo;
       }
       | simple_exp EQMORET simple_exp
       { 
@@ -130,6 +138,7 @@ exp : simple_exp LESST simple_exp
         $$->leftChild = $1;
         $$->centerChild = $3;
         $$->opType = EQMORET_OP;
+        $$->lineNo = lineNo;
       }
       | simple_exp
       { 
@@ -142,6 +151,7 @@ simple_exp : simple_exp PLUS term
         $$->leftChild = $1;
         $$->centerChild = $3;
         $$->opType = PLUS_OP;
+        $$->lineNo = lineNo;
       }
       | simple_exp SUB term
       {
@@ -149,6 +159,7 @@ simple_exp : simple_exp PLUS term
         $$->leftChild = $1;
         $$->centerChild = $3;
         $$->opType = SUB_OP;
+        $$->lineNo = lineNo;
       }
       | term { $$ = $1; }
       ;
@@ -158,12 +169,14 @@ term : term MULT factor
          $$->leftChild = $1;
          $$->centerChild = $3;
          $$->opType = MULT_OP;
+         $$->lineNo = lineNo;
        }
        | term DIV factor
        { $$ = create_node(OPERATION_TYPE);
          $$->leftChild = $1;
          $$->centerChild = $3;
          $$->opType = DIV_OP;
+         $$->lineNo = lineNo;
        }
       | factor { $$ = $1; }
       ;
@@ -179,11 +192,19 @@ factor : LPAREN exp RPAREN
            strncpy($$->str_value, token_str,TOKENLENGTH);
            $$->lineNo = lineNo;
          }
+         | error 
+         {
+           $$ = NULL;
+         }
          ;
 %%
 
 int yyerror(char *errmsg){
-  printf("\n%s: %s at line: %d\n", errmsg, token_str,lineNo);
+  printf("\nSyntax error at line: %d", lineNo);
+  if(strlen(token_str)!=0)
+    printf(", unexpected token:%s\n", token_str);
+  else 
+    printf("\n");
   exit(EXIT_FAILURE);
   return -1;
 }

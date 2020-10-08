@@ -71,7 +71,8 @@ extern int yydebug;
     RPAREN = 277,
     ID = 278,
     NUM = 279,
-    ASSIGN = 280
+    ASSIGN = 280,
+    ERROR = 281
   };
 #endif
 /* Tokens.  */
@@ -98,18 +99,11 @@ extern int yydebug;
 #define ID 278
 #define NUM 279
 #define ASSIGN 280
+#define ERROR 281
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 12 "syntax_analyzer.y"
-struct st_node * syntax_tree;
-
-#line 110 "y.tab.h"
-
-};
-typedef union YYSTYPE YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

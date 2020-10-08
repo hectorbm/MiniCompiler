@@ -7,7 +7,7 @@ char * check_typos(SyntaxTree *st){
             case IF_TYPE:
                 strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                 if(strcmp(aux,BOOL)!=0){
-                    printf("Type error: %s instead of bool\n",aux);
+                    printf("Type error in if: %s instead of bool at line:%d\n",aux,st->leftChild->lineNo);
                     exit(EXIT_FAILURE);
                 }
                 check_typos(st->centerChild);
@@ -18,7 +18,7 @@ char * check_typos(SyntaxTree *st){
             case REPEAT_TYPE:
                 strncpy(aux,check_typos(st->centerChild),MAXTYPELEN);
                 if(strcmp(aux,BOOL)!=0){
-                    printf("Type error: %s instead of bool\n",aux);
+                    printf("Type error in repeat: %s instead of bool at line:%d\n",aux,st->lineNo);
                     exit(EXIT_FAILURE);
                 }
                 check_typos(st->leftChild);
@@ -28,7 +28,7 @@ char * check_typos(SyntaxTree *st){
             case ASSIGN_TYPE:
                 strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                 if(strcmp(aux,INT)!=0){
-                    printf("Type error: %s instead of int\n",aux);
+                    printf("Type error in assignment: %s instead of int at line:%d\n",aux,st->lineNo);
                     exit(EXIT_FAILURE);
                 }
                 if(strcmp(getSymbolVarType(st->str_value),NA)==0){
@@ -45,7 +45,7 @@ char * check_typos(SyntaxTree *st){
             case WRITE_TYPE:
                 strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                 if(strcmp(aux,INT)!=0){
-                    printf("Type error: %s instead of int\n",aux);
+                    printf("Type error in write: %s instead of int at line:%d\n",aux,st->lineNo);
                     exit(EXIT_FAILURE);
                 }
                 check_typos(st->nextStmt);
@@ -65,12 +65,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in plus operation: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in plus operation: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return INT;
@@ -78,12 +80,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in subtract operation: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in subtract operation: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return INT;
@@ -91,12 +95,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in mult operation: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in mult operation: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return INT;
@@ -104,12 +110,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in division operation: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in division operation: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return INT;
@@ -117,12 +125,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return BOOL;
@@ -130,12 +140,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return BOOL;
@@ -143,12 +155,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return BOOL;
@@ -156,12 +170,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return BOOL;
@@ -169,12 +185,14 @@ char * check_typos(SyntaxTree *st){
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
                         if(strcmp(aux2,INT)!=0){
-                            printf("Type error: %s instead of int\n",aux);
+                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
+                            return NULL;
                         }
 
                         return BOOL;

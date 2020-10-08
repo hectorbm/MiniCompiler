@@ -138,7 +138,7 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
                 r1 = aux.destreg;
                 nextLineNo = aux.endCodeLine + 1;
                 if(!lenCheckMode)
-                    fprintf(vm_code,"SW,%d,%d\n",r1,getSymbolPosition(st->str_value));
+                    fprintf(vm_code,"SW,%d,%d\n",r1,getSymbolMemoryPosition(st->str_value));
 
                 instructionRetVal.endCodeLine = nextLineNo;
 
@@ -152,7 +152,7 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
                 r1 = initialTempReg;
                 if(!lenCheckMode) {
                     fprintf(vm_code, "READ,%d\n", r1);
-                    fprintf(vm_code, "SW,%d,%d\n", r1, getSymbolPosition(st->str_value));
+                    fprintf(vm_code, "SW,%d,%d\n", r1, getSymbolMemoryPosition(st->str_value));
                 }
                 instructionRetVal.destreg = r1;
                 instructionRetVal.endCodeLine = nextLineNo+1;
@@ -181,7 +181,7 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
             case ID_TYPE:
                 r1 = initialTempReg;
                 if(!lenCheckMode)
-                    fprintf(vm_code,"LW,%d,%d\n",r1,getSymbolPosition(st->str_value));
+                    fprintf(vm_code,"LW,%d,%d\n",r1,getSymbolMemoryPosition(st->str_value));
                 instructionRetVal.destreg = r1;
                 instructionRetVal.endCodeLine = nextLineNo;
                 break;
