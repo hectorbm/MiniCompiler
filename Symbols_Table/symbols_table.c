@@ -72,14 +72,14 @@ void addLineToSymbol(int lineNo, char * varName){
 }
 
 void showSymbolTable(){
-    printf("Variable\tLines\t\tType\n");
+    printf("Variable\tLines\t\tType\tLocation\n");
     int i,j;
     for(i=0;i<nextEmptyPos;i++){
         printf("%s\t\t",sym_table[i].varName);
         for(j=0;j<sym_table[i].linesNo;j++){
             printf("%d,",sym_table[i].lines[j]);
         }
-        printf("\t%s",sym_table[i].var_type);
+        printf("\t%s\t%d",sym_table[i].var_type,i);
         printf("\n");
     }
 }

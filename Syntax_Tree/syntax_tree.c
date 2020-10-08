@@ -112,6 +112,5 @@ SyntaxTree * create_node(NodeType nodetype){
     node->rightChild = NULL;
     node->nodeType = nodetype;
     node->str_value = (char *) malloc(TOKENLENGTH*sizeof(char));
-    strncpy(node->varType,"",5);
     return node;
 }

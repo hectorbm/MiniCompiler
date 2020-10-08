@@ -2,6 +2,7 @@
 
 char * check_typos(SyntaxTree *st){
     char aux[MAXTYPELEN],aux2[MAXTYPELEN];
+    char *typo=NULL;
     if(st != NULL){
         switch (st->nodeType) {
             case IF_TYPE:
@@ -52,153 +53,57 @@ char * check_typos(SyntaxTree *st){
                 break;
 
             case ID_TYPE:
-                strncpy(st->varType,getSymbolVarType(st->str_value),5);
-                return st->varType;
+                typo = getSymbolVarType(st->str_value);
+                break;
 
             case CONST_TYPE:
-                strncpy(st->varType,INT,5);
-                return st->varType;
+                typo = INT;
+                break;
 
             case OPERATION_TYPE:
                 switch (st->opType) {
                     case PLUS_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
-                        if(strcmp(aux,INT)!=0){
-                            printf("Type error in plus operation: %s instead of int at line:%d\n",aux,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in plus operation: %s instead of int at line:%d\n",aux2,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-
-                        return INT;
                     case SUB_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
-                        if(strcmp(aux,INT)!=0){
-                            printf("Type error in subtract operation: %s instead of int at line:%d\n",aux,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in subtract operation: %s instead of int at line:%d\n",aux2,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-
-                        return INT;
                     case MULT_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
-                        if(strcmp(aux,INT)!=0){
-                            printf("Type error in mult operation: %s instead of int at line:%d\n",aux,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in mult operation: %s instead of int at line:%d\n",aux2,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-
-                        return INT;
                     case DIV_OP:
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
-                            printf("Type error in division operation: %s instead of int at line:%d\n",aux,st->lineNo);
+                            printf("Type error in operation: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
-                            return NULL;
                         }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in division operation: %s instead of int at line:%d\n",aux2,st->lineNo);
+                        else if(strcmp(aux2,INT)!=0){
+                            printf("Type error in operation: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
-                            return NULL;
                         }
+                        else{
+                            typo = INT;
+                        }
+                        break;
 
-                        return INT;
                     case EQUAL_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
-                        if(strcmp(aux,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-
-                        return BOOL;
                     case LESST_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
-                        if(strcmp(aux,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-
-                        return BOOL;
                     case MORET_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
-                        if(strcmp(aux,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-
-                        return BOOL;
                     case EQMORET_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
-                        if(strcmp(aux,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-                        if(strcmp(aux2,INT)!=0){
-                            printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
-                            exit(EXIT_FAILURE);
-                            return NULL;
-                        }
-
-                        return BOOL;
                     case EQLESST_OP:
                         strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
                         strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
                             printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
-                            return NULL;
                         }
-                        if(strcmp(aux2,INT)!=0){
+                        else if(strcmp(aux2,INT)!=0){
                             printf("Type error in comparison: %s instead of int at line:%d\n",aux2,st->lineNo);
                             exit(EXIT_FAILURE);
-                            return NULL;
                         }
-
-                        return BOOL;
+                        else{
+                            typo = BOOL;
+                        }
+                        break;
                 }
                 break;
+                
         }
     }
-    return NULL;
+    return typo;
 }
