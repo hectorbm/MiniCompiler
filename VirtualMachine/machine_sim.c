@@ -42,64 +42,64 @@ void cleanStart(){
 InstructionOpcode strToInstruction(char * opcode){
     if(strcmp(opcode,"ADDI")==0)
         return ADDI;
-    if(strcmp(opcode,"ADD")==0)
+    else if(strcmp(opcode,"ADD")==0)
         return ADD;
-    if(strcmp(opcode,"SUB")==0)
+    else if(strcmp(opcode,"SUB")==0)
         return SUB;
-    if(strcmp(opcode,"SUBI")==0)
+    else if(strcmp(opcode,"SUBI")==0)
         return SUBI;
-    if(strcmp(opcode,"MULT")==0)
+    else if(strcmp(opcode,"MULT")==0)
         return MULT;
-    if(strcmp(opcode,"MULTI")==0)
+    else if(strcmp(opcode,"MULTI")==0)
         return MULTI;
-    if(strcmp(opcode,"DIVI")==0)
+    else if(strcmp(opcode,"DIVI")==0)
         return DIVI;
-    if(strcmp(opcode,"DIV")==0)
+    else if(strcmp(opcode,"DIV")==0)
         return DIV;
-    if(strcmp(opcode,"AND")==0)
+    else if(strcmp(opcode,"AND")==0)
         return AND;
-    if(strcmp(opcode,"ANDI")==0)
+    else if(strcmp(opcode,"ANDI")==0)
         return ANDI;
-    if(strcmp(opcode,"OR")==0)
+    else if(strcmp(opcode,"OR")==0)
         return OR;
-    if(strcmp(opcode,"ORI")==0)
+    else if(strcmp(opcode,"ORI")==0)
         return ORI;
-    if(strcmp(opcode,"XOR")==0)
+    else if(strcmp(opcode,"XOR")==0)
         return XOR;
-    if(strcmp(opcode,"XORI")==0)
+    else if(strcmp(opcode,"XORI")==0)
         return XORI;
-    if(strcmp(opcode,"BEQ")==0)
+    else if(strcmp(opcode,"BEQ")==0)
         return BEQ;
-    if(strcmp(opcode,"BNE")==0)
+    else if(strcmp(opcode,"BNE")==0)
         return BNE;
-    if(strcmp(opcode,"SLT")==0)
+    else if(strcmp(opcode,"SLT")==0)
         return SLT;
-    if(strcmp(opcode,"SLTI")==0)
+    else if(strcmp(opcode,"SLTI")==0)
         return SLTI;
-    if(strcmp(opcode,"BGEZ")==0)
+    else if(strcmp(opcode,"BGEZ")==0)
         return BGEZ;
-    if(strcmp(opcode,"BGTZ")==0)
+    else if(strcmp(opcode,"BGTZ")==0)
         return BGTZ;
-    if(strcmp(opcode,"BLEZ")==0)
+    else if(strcmp(opcode,"BLEZ")==0)
         return BLEZ;
-    if(strcmp(opcode,"BLTZ")==0)
+    else if(strcmp(opcode,"BLTZ")==0)
         return BLTZ;
-    if(strcmp(opcode,"LW")==0)
+    else if(strcmp(opcode,"LW")==0)
         return LW;
-    if(strcmp(opcode,"SW")==0)
+    else if(strcmp(opcode,"SW")==0)
         return SW;
-    if(strcmp(opcode,"READ")==0)
+    else if(strcmp(opcode,"READ")==0)
         return READ;
-    if(strcmp(opcode,"WRITE")==0)
+    else if(strcmp(opcode,"WRITE")==0)
         return WRITE;
-    if(strcmp(opcode,"JUMP")==0)
+    else if(strcmp(opcode,"JUMP")==0)
         return JUMP;
-    if(strcmp(opcode,"HALT")==0)
+    else if(strcmp(opcode,"HALT")==0)
         return HALT;
-    if(strcmp(opcode,"NOP")==0)
+    else if(strcmp(opcode,"NOP")==0)
         return NOP;
-
-    return UNKNOWN;
+    else
+        return UNKNOWN;
 }
 
 int opcodeNumberOfParams(InstructionOpcode opcode){

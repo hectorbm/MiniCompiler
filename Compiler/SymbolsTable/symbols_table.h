@@ -3,7 +3,7 @@
 #include <string.h>
 #define SYMTABLE_SIZE 15
 #define MAXLEN_VARTYPE 5
-#include "../Syntax_Tree/syntax_tree.h"
+#include "../SyntaxTree/syntax_tree.h"
 
 struct symbol{
     int linesNo; //Number of lines the symbol appears
@@ -16,6 +16,6 @@ int getSymbolMemoryPosition(char * varName);
 int addSymbol(char * varName);
 void addLineToSymbol(int lineNo, char * varName);
 void showSymbolTable();
-void buildSymbolsTable(SyntaxTree * st);
+void buildSymtab(SyntaxTree * st);
 void setSymbolVarType(char * varName, char * varType);
 char * getSymbolVarType(char * varName);

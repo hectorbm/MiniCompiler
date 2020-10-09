@@ -85,15 +85,15 @@ void showSymbolTable(){
 }
 
 
-void buildSymbolsTable(SyntaxTree * st){
+void buildSymtab(SyntaxTree * st){
     if(st != NULL){
         if(st->nodeType == ASSIGN_TYPE || st->nodeType == READ_TYPE || st->nodeType == ID_TYPE){
             addSymbol(st->str_value);
             addLineToSymbol(st->lineNo,st->str_value);
         }
-        buildSymbolsTable(st->leftChild);
-        buildSymbolsTable(st->centerChild);
-        buildSymbolsTable(st->rightChild);
-        buildSymbolsTable(st->nextStmt);
+        buildSymtab(st->leftChild);
+        buildSymtab(st->centerChild);
+        buildSymtab(st->rightChild);
+        buildSymtab(st->nextStmt);
     }
 }

@@ -47,5 +47,5 @@ SyntaxTree * create_node(NodeType nodetype);
 
 void showSyntaxTree(SyntaxTree * syntaxtree, int ident_num);
 
-SyntaxTree * parseAndGetSyntaxTree();
+SyntaxTree * parse();
 

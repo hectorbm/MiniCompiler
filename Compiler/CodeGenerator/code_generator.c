@@ -256,7 +256,7 @@ CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nex
 }
 
 // InitialTempReg is 1, $0 is constant, using VM MIPS type register.
-void codeGenerator(SyntaxTree * st,char * destFile){
+void codeGen(SyntaxTree * st,char * destFile){
     FILE * vm_code = NULL;
     if((vm_code=fopen(destFile,"w"))==NULL){
         printf("Unable to create destination file");

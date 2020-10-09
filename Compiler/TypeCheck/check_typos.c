@@ -1,33 +1,33 @@
 #include "check_typos.h"
 
-char * check_typos(SyntaxTree *st){
+char * typeCheck(SyntaxTree *st){
     char aux[MAXTYPELEN],aux2[MAXTYPELEN];
     char *typo=NULL;
     if(st != NULL){
         switch (st->nodeType) {
             case IF_TYPE:
-                strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
+                strncpy(aux,typeCheck(st->leftChild),MAXTYPELEN);
                 if(strcmp(aux,BOOL)!=0){
                     printf("Type error in if: %s instead of bool at line:%d\n",aux,st->leftChild->lineNo);
                     exit(EXIT_FAILURE);
                 }
-                check_typos(st->centerChild);
-                check_typos(st->rightChild);
-                check_typos(st->nextStmt);
+                typeCheck(st->centerChild);
+                typeCheck(st->rightChild);
+                typeCheck(st->nextStmt);
                 break;
 
             case REPEAT_TYPE:
-                strncpy(aux,check_typos(st->centerChild),MAXTYPELEN);
+                strncpy(aux,typeCheck(st->centerChild),MAXTYPELEN);
                 if(strcmp(aux,BOOL)!=0){
                     printf("Type error in repeat: %s instead of bool at line:%d\n",aux,st->lineNo);
                     exit(EXIT_FAILURE);
                 }
-                check_typos(st->leftChild);
-                check_typos(st->nextStmt);
+                typeCheck(st->leftChild);
+                typeCheck(st->nextStmt);
                 break;
 
             case ASSIGN_TYPE:
-                strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
+                strncpy(aux,typeCheck(st->leftChild),MAXTYPELEN);
                 if(strcmp(aux,INT)!=0){
                     printf("Type error in assignment: %s instead of int at line:%d\n",aux,st->lineNo);
                     exit(EXIT_FAILURE);
@@ -35,21 +35,21 @@ char * check_typos(SyntaxTree *st){
                 if(strcmp(getSymbolVarType(st->str_value),NA)==0){
                     setSymbolVarType(st->str_value,aux);
                 }
-                check_typos(st->nextStmt);
+                typeCheck(st->nextStmt);
                 break;
 
             case READ_TYPE:
                 setSymbolVarType(st->str_value,INT);
-                check_typos(st->nextStmt);
+                typeCheck(st->nextStmt);
                 break;
 
             case WRITE_TYPE:
-                strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
+                strncpy(aux,typeCheck(st->leftChild),MAXTYPELEN);
                 if(strcmp(aux,INT)!=0){
                     printf("Type error in write: %s instead of int at line:%d\n",aux,st->lineNo);
                     exit(EXIT_FAILURE);
                 }
-                check_typos(st->nextStmt);
+                typeCheck(st->nextStmt);
                 break;
 
             case ID_TYPE:
@@ -66,8 +66,8 @@ char * check_typos(SyntaxTree *st){
                     case SUB_OP:
                     case MULT_OP:
                     case DIV_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
+                        strncpy(aux,typeCheck(st->leftChild),MAXTYPELEN);
+                        strncpy(aux2,typeCheck(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
                             printf("Type error in operation: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);
@@ -86,8 +86,8 @@ char * check_typos(SyntaxTree *st){
                     case MORET_OP:
                     case EQMORET_OP:
                     case EQLESST_OP:
-                        strncpy(aux,check_typos(st->leftChild),MAXTYPELEN);
-                        strncpy(aux2,check_typos(st->centerChild),MAXTYPELEN);
+                        strncpy(aux,typeCheck(st->leftChild),MAXTYPELEN);
+                        strncpy(aux2,typeCheck(st->centerChild),MAXTYPELEN);
                         if(strcmp(aux,INT)!=0){
                             printf("Type error in comparison: %s instead of int at line:%d\n",aux,st->lineNo);
                             exit(EXIT_FAILURE);

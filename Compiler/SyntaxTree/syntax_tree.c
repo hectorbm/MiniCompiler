@@ -1,5 +1,5 @@
 #include "syntax_tree.h"
-#include "../Lex_and_Yacc/lexical_analyzer.h"
+#include "../LexYacc/lexical_analyzer.h"
 #include <stdio.h>
 #include <string.h>
 

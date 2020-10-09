@@ -1,4 +1,4 @@
-#include "check_typos.h"
+#include "../TypeCheck/check_typos.h"
 
 typedef struct codeGen{
     int destinationRegister;
@@ -6,7 +6,7 @@ typedef struct codeGen{
 }CodeGenVM;
 
 CodeGenVM generateCode(SyntaxTree * st,FILE * vm_code,int initialTempReg,int nextLineNo,int lenCheckMode);
-void codeGenerator(SyntaxTree * st,char * destFile);
+void codeGen(SyntaxTree * st,char * destFile);
 
 
 

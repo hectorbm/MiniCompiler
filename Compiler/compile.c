@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "code_generator.h"
+#include "CodeGenerator/code_generator.h"
 
 extern FILE * yyin;
 
 int main(int argc, char * argv []){
-    SyntaxTree * st;
+    SyntaxTree * syntaxTree;
 
     if(argc!=2){
         printf("Input file is missing!\n");
@@ -21,18 +21,18 @@ int main(int argc, char * argv []){
     //Set code as input
     yyin = code;
     //Create syntax tree
-    st = parseAndGetSyntaxTree();
+    syntaxTree = parse();
 
     //Show syntax tree
     printf("\nSyntax Tree:\n");
-    showSyntaxTree(st,0);
+    showSyntaxTree(syntaxTree,0);
 
     //Build symbols table
-    buildSymbolsTable(st);
+    buildSymtab(syntaxTree);
     
     //Check typos
     printf("Checking typos: ");
-    check_typos(st);
+    typeCheck(syntaxTree);
     printf("Typos OK\n");
 
     //Show symbols table
@@ -40,7 +40,8 @@ int main(int argc, char * argv []){
     showSymbolTable();
 
     //Generate code
-    codeGenerator(st,strcat(fileName,".vm"));
+    codeGen(syntaxTree,strcat(fileName,".vm"));
 
+    printf("Test changing ");
 }
 

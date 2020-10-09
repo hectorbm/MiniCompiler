@@ -68,7 +68,7 @@
 /* First part of user prologue.  */
 #line 1 "syntax_analyzer.y"
 
-#include "../Syntax_Tree/syntax_tree.h"  
+#include "../SyntaxTree/syntax_tree.h"  
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -1926,7 +1926,7 @@ static int yylex(void){
   return getToken();
 }
 
-SyntaxTree * parseAndGetSyntaxTree(){
+SyntaxTree * parse(){
   yyparse();
   return syntaxTree;
 }
