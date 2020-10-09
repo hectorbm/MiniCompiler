@@ -10,7 +10,7 @@
 #define REGSIZE 32
 #define INSTRUCTION_MEMSIZE 4096
 #define DATA_MEMSIZE 4096
-
+#define MAXLENOPCODE 6
 /*
  * Instruction Set
  */
@@ -56,6 +56,11 @@ typedef struct {
     int iarg2;
     int iarg3;
 } INSTRUCTION;
+
+typedef struct {
+    char opCode_str [6];
+    InstructionOpcode opcode;
+} MapStrToInstructionOpcode;
 
 void cleanStart();
 InstructionOpcode strToInstruction(char * opcode);

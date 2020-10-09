@@ -40,66 +40,44 @@ void cleanStart(){
 }
 
 InstructionOpcode strToInstruction(char * opcode){
-    if(strcmp(opcode,"ADDI")==0)
-        return ADDI;
-    else if(strcmp(opcode,"ADD")==0)
-        return ADD;
-    else if(strcmp(opcode,"SUB")==0)
-        return SUB;
-    else if(strcmp(opcode,"SUBI")==0)
-        return SUBI;
-    else if(strcmp(opcode,"MULT")==0)
-        return MULT;
-    else if(strcmp(opcode,"MULTI")==0)
-        return MULTI;
-    else if(strcmp(opcode,"DIVI")==0)
-        return DIVI;
-    else if(strcmp(opcode,"DIV")==0)
-        return DIV;
-    else if(strcmp(opcode,"AND")==0)
-        return AND;
-    else if(strcmp(opcode,"ANDI")==0)
-        return ANDI;
-    else if(strcmp(opcode,"OR")==0)
-        return OR;
-    else if(strcmp(opcode,"ORI")==0)
-        return ORI;
-    else if(strcmp(opcode,"XOR")==0)
-        return XOR;
-    else if(strcmp(opcode,"XORI")==0)
-        return XORI;
-    else if(strcmp(opcode,"BEQ")==0)
-        return BEQ;
-    else if(strcmp(opcode,"BNE")==0)
-        return BNE;
-    else if(strcmp(opcode,"SLT")==0)
-        return SLT;
-    else if(strcmp(opcode,"SLTI")==0)
-        return SLTI;
-    else if(strcmp(opcode,"BGEZ")==0)
-        return BGEZ;
-    else if(strcmp(opcode,"BGTZ")==0)
-        return BGTZ;
-    else if(strcmp(opcode,"BLEZ")==0)
-        return BLEZ;
-    else if(strcmp(opcode,"BLTZ")==0)
-        return BLTZ;
-    else if(strcmp(opcode,"LW")==0)
-        return LW;
-    else if(strcmp(opcode,"SW")==0)
-        return SW;
-    else if(strcmp(opcode,"READ")==0)
-        return READ;
-    else if(strcmp(opcode,"WRITE")==0)
-        return WRITE;
-    else if(strcmp(opcode,"JUMP")==0)
-        return JUMP;
-    else if(strcmp(opcode,"HALT")==0)
-        return HALT;
-    else if(strcmp(opcode,"NOP")==0)
-        return NOP;
-    else
-        return UNKNOWN;
+    MapStrToInstructionOpcode opcodeList[29] = {
+        {"ADDI", ADDI},
+        {"ADD", ADD},
+        {"SUB", SUB},
+        {"SUBI", SUBI},
+        {"MULT", MULT},
+        {"MULTI", MULTI},
+        {"DIV", DIV},
+        {"DIVI", DIVI},
+        {"AND", AND},
+        {"ANDI", ANDI},
+        {"OR", OR},
+        {"ORI", ORI},
+        {"XOR", XOR},
+        {"XORI", XORI},
+        {"BEQ", BEQ},
+        {"BNE", BNE},
+        {"SLT", SLT},
+        {"SLTI", SLTI},
+        {"BGEZ", BGEZ},
+        {"BGTZ", BGTZ},
+        {"BLEZ", BLEZ},
+        {"BLTZ", BLTZ},
+        {"LW", LW},
+        {"SW", SW},
+        {"READ", READ},
+        {"WRITE", WRITE},
+        {"JUMP", JUMP},
+        {"HALT", HALT},
+        {"NOP",NOP}
+    };
+    int i =0;
+    for(i=0;i<29;i++){
+        if(strcmp(opcodeList[i].opCode_str, opcode)==0)
+            return opcodeList[i].opcode;
+    }
+    return UNKNOWN;
+
 }
 
 int opcodeNumberOfParams(InstructionOpcode opcode){
