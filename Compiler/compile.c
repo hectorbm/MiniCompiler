@@ -41,7 +41,6 @@ int main(int argc, char * argv []){
 
     //Generate code
     codeGen(syntaxTree,strcat(fileName,".vm"));
-
-    printf("Test changing ");
+    
 }
 
